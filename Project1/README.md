@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+Users
+* username:string | password_digest:string | id (created for us)
+
+Reimbursements
+* user_id | amount:integer | description:string | id (created for us)
