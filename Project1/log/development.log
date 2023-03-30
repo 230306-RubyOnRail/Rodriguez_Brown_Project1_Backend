@@ -732,3 +732,47 @@ Processing by UserController#destroy as */*
 Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 3.2ms | Allocations: 1720)
 
 
+Started GET "/users" for 127.0.0.1 at 2023-03-30 17:38:48 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UserController#show as */*
+  Parameters: {"user"=>{}}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/concerns/authenticatable.rb:16:in `authenticate_request!'
+Completed 404 Not Found in 19ms (ActiveRecord: 7.6ms | Allocations: 8106)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find User without an ID):
+  
+app/controllers/user_controller.rb:14:in `show'
+Started GET "/users" for 127.0.0.1 at 2023-03-30 17:39:55 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UserController#show as */*
+  Parameters: {"user"=>{}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/concerns/authenticatable.rb:16:in `authenticate_request!'
+Completed 200 OK in 31ms (Views: 0.2ms | ActiveRecord: 16.4ms | Allocations: 8211)
+
+
+Started GET "/users" for 127.0.0.1 at 2023-03-30 17:40:55 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UserController#show as */*
+  Parameters: {"user"=>{}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/concerns/authenticatable.rb:16:in `authenticate_request!'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/user_controller.rb:14:in `puts'
+Completed 200 OK in 35ms (Views: 0.3ms | ActiveRecord: 8.3ms | Allocations: 8967)
+
+
+Started GET "/users" for 127.0.0.1 at 2023-03-30 17:41:33 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UserController#show as */*
+  Parameters: {"user"=>{}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/concerns/authenticatable.rb:16:in `authenticate_request!'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/user_controller.rb:15:in `show'
+Completed 200 OK in 35ms (Views: 1.9ms | ActiveRecord: 9.0ms | Allocations: 9560)
+
+

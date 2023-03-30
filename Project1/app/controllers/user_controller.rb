@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   include Authenticatable
+
   def create
     user = User.new(username: params[:username], password: params[:password])
     if user.save
@@ -10,8 +11,8 @@ class UserController < ApplicationController
   end
 
   def show
-    user = User.find
-    render json: user.hash.as_json, status: :ok
+    users = User.all
+    render json: users, status: :ok
   end
 
   def destroy
