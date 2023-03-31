@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'reimbursement/show'
   get 'reimbursement/create'
-  get 'reimbursement/destory'
+  get 'reimbursement/destroy'
   get 'reimbursement/update'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
