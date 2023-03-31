@@ -10,8 +10,8 @@ class UserController < ApplicationController
   end
 
   def show
-    user = User.find
-    render json: user.hash.as_json, status: :ok
+    users = User.all
+    render json: users, status: :ok
   end
 
   def destroy
