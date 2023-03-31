@@ -10,8 +10,8 @@ class UserController < ApplicationController
   end
 
   def show
-    users = User.all
-    render json: users, status: :ok
+    user = User.all
+    render json: user, status: :ok
   end
 
   def destroy
