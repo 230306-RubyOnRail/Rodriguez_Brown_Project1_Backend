@@ -1,6 +1,7 @@
 class ReimbursementController < ApplicationController
   def show
     reimbursement = Reimbursement.all
+    # render json: {message: 'reimbursement shown'}
     render json: reimbursement, status: :ok
   end
 
@@ -13,7 +14,7 @@ class ReimbursementController < ApplicationController
     end
   end
 
-  def destory
+  def destroy
     reimbursement = Reimbursement.find(params[:id])
     if reimbursement.present?
       reimbursement.delete
@@ -24,9 +25,10 @@ class ReimbursementController < ApplicationController
   end
 
   def update
-    reimbursement = Reimbursement.update(params[:id])
+    reimbursement = Reimbursement.find(params[:id])
     if reimbursement.present?
-      reimbursement.update_attributes
+      reimbursement.update_attribute(:description, params[:description])
+      reimbursement.update_attribute(:amount, params[:amount])
       render json: {message: "reimbursement updating"}, status: :ok
     else
       render json: {message: "reimbursement update failed"}, status: :error
