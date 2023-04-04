@@ -1,37 +1,65 @@
 class ReimbursementController < ApplicationController
+  include Authenticatable
   def show
-    reimbursement = Reimbursement.all
-    # render json: {message: 'reimbursement shown'}
+    reimbursement = if @current_user.admin
+                      Reimbursement.all
+                    else
+                      Reimbursement.all.where(user_id: @current_user.id)
+                    end
     render json: reimbursement, status: :ok
   end
 
   def create
-    reimbursement = Reimbursement.new(description: params[:description] ,amount: params[:amount])
+    return unless check_not_admin
+
+    reimbursement = Reimbursement.new(description: params[:description], amount: params[:amount], user_id: @current_user.id)
     if reimbursement.save
-        {status: [201, 'Created']}
+      render json: { message: 'Reimbursement successfully created.' }, status: :ok
     else
-        json status: [400, 'Bad Request'], body: {reimbursement: 'Invalid list'}
+      render json: { message: 'Error creating reimbursement.' }, status: :unprocessable_entity
     end
   end
 
   def destroy
     reimbursement = Reimbursement.find(params[:id])
-    if reimbursement.present?
-      reimbursement.delete
-      render json: { message: 'Reimbursement deleted successfully' }, status: :ok
-    else
-      render json: { message: 'Error deleting reimbursement' }, status: :unprocessable_entity
+    unless reimbursement.present?
+      render json: { message: 'Error deleting reimbursement.' }, status: :unprocessable_entity
     end
+    return unless check_admin_or_same_user(reimbursement.user.id)
+
+    reimbursement.delete
+    render json: { message: 'Reimbursement deleted successfully.' }, status: :ok
   end
 
   def update
     reimbursement = Reimbursement.find(params[:id])
-    if reimbursement.present?
-      reimbursement.update_attribute(:description, params[:description])
-      reimbursement.update_attribute(:amount, params[:amount])
-      render json: {message: "reimbursement updating"}, status: :ok
+    unless reimbursement.present?
+      render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
+    end
+    if check_same_user_no_error(reimbursement.user.id) && reimbursement.status.to_i == 1
+      desc = if params[:description].nil?
+               reimbursement.description
+             else
+               params[:description]
+             end
+      amt = if params[:amount].nil?
+              reimbursement.amount
+            else
+              params[:amount]
+            end
+      if reimbursement.update(description: desc, amount: amt)
+        render json: { message: 'Reimbursement updated successfully.' }, status: :ok
+      else
+        render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
+      end
+    elsif @current_user.admin
+      if reimbursement.update(status: params[:status])
+        render json: { message: 'Reimbursement updated successfully.' }, status: :ok
+      else
+        render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
+      end
     else
-      render json: {message: "reimbursement update failed"}, status: :error
+      render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
     end
   end
 
