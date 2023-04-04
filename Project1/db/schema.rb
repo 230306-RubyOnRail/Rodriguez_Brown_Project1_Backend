@@ -10,26 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_31_182932) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_30_215119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "reimbursements", force: :cascade do |t|
-    t.integer "amount"
-    t.string "description"
+    t.integer "amount", null: false
+    t.string "description", null: false
+    t.integer "status", default: 1
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "users_id"
-    t.index ["users_id"], name: "index_reimbursements_on_users_id"
+    t.index ["user_id"], name: "index_reimbursements_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password_digest"
+    t.string "username", limit: 16, null: false
+    t.string "password_digest", null: false
+    t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "admin"
   end
 
-  add_foreign_key "reimbursements", "users", column: "users_id"
+  add_foreign_key "reimbursements", "users"
 end
