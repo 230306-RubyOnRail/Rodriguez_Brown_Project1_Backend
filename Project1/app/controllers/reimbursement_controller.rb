@@ -36,26 +36,23 @@ class ReimbursementController < ApplicationController
     unless reimbursement.present?
       render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
     end
-    csu = check_same_user_no_error(reimbursement.user.id)
-    if csu && !params[:description].nil? && !params[:amount].nil? && reimbursement.status.to_i == 1
-      if reimbursement.update(description: params[:description], amount: params[:amount])
+    if check_same_user_no_error(reimbursement.user.id) && reimbursement.status.to_i == 1
+      desc = if params[:description].nil?
+               reimbursement.description
+             else
+               params[:description]
+             end
+      amt = if params[:amount].nil?
+              reimbursement.amount
+            else
+              params[:amount]
+            end
+      if reimbursement.update(description: desc, amount: amt)
         render json: { message: 'Reimbursement updated successfully.' }, status: :ok
       else
         render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
       end
-    elsif csu && !params[:description].nil? && reimbursement.status.to_i == 1
-      if reimbursement.update(description: params[:description])
-        render json: { message: 'Reimbursement updated successfully.' }, status: :ok
-      else
-        render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
-      end
-    elsif csu && !params[:amount].nil? && reimbursement.status.to_i == 1
-      if reimbursement.update(amount: params[:amount])
-        render json: { message: 'Reimbursement updated successfully.' }, status: :ok
-      else
-        render json: { message: 'Error updating reimbursement.' }, status: :unprocessable_entity
-      end
-    elsif @current_user.admin && !params[:status].nil?
+    elsif @current_user.admin
       if reimbursement.update(status: params[:status])
         render json: { message: 'Reimbursement updated successfully.' }, status: :ok
       else
