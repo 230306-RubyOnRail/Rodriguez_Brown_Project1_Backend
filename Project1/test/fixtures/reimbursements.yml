@@ -1,9 +1,23 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  amount: 1
-  description: MyString
+employeeReimbursement:
+  user: employee
+  amount: 1200
+  status: 1
+  description: Employee Reimbursement
 
-two:
-  amount: 1
-  description: MyString
+employeeReimbursement2:
+  user: employee
+  amount: 1200
+  status: 2
+  description: Employee Reimbursement2
+
+employeeReimbursement3:
+  user: employee
+  amount: 1200
+  status: 3
+  description: Employee Reimbursement3
+
+# two:
+#   amount: 1
+#   description: MyString

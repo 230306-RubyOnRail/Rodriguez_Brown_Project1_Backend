@@ -3,7 +3,7 @@ class UserController < ApplicationController
   def create
     return unless check_admin
 
-    user = User.new(username: params[:username], password: params[:password], admin: params[:admin])
+    user = User.new(username: params[:username], password: params[:password], admin: params[:admin], name: params[:name])
     if user.save
       render json: { message: 'User created successfully' }, status: :ok
       return
@@ -13,9 +13,9 @@ class UserController < ApplicationController
 
   def show
     user = if @current_user.admin
-             User.all
+             User.all.select('id, admin, name')
            else
-             @current_user
+             {id: @current_user.id, admin: @current_user.admin, name: @current_user.name}
            end
     render json: user, status: :ok
   end
@@ -32,6 +32,11 @@ class UserController < ApplicationController
 
     user = User.find(params[:id])
     return render json: { message: 'Error deleting user' }, status: :unprocessable_entity unless user.present?
+
+    reimbursement = Reimbursement.all.where(user_id: params[:id])
+    reimbursement.each do |reim| 
+      reim.delete
+    end
 
     user.delete
     render json: { message: 'User deleted successfully' }, status: :ok

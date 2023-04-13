@@ -1,23 +1,28 @@
 require "test_helper"
 
 class ReimbursementControllerTest < ActionDispatch::IntegrationTest
-  test "should get show" do
-    get reimbursement_show_url
-    assert_response :success
+  setup do
+    @employee = users(:employee)
+    @employeetoken = JsonWebToken.encode({user_id: @employee.id})
+
+    @manager = users(:manager)
+    @managertoken = JsonWebToken.encode({user_id: @manager.id})
+
+    @employeeReimbursement = reimbursements(:employeeReimbursement)
+
   end
 
-  test "should get create" do
-    get reimbursement_create_url
-    assert_response :success
+  test "the truth" do
+    assert true
   end
 
-  test "should get destory" do
-    get reimbursement_destory_url
-    assert_response :success
+  test "Test for show reimbursements" do
+    get '/reimbursements', headers:{'Authorization': @employeetoken }
+    assert_response :ok
+    assert response.parsed_body.length > 0
   end
+  
 
-  test "should get update" do
-    get reimbursement_update_url
-    assert_response :success
-  end
+
+  
 end

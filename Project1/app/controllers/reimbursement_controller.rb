@@ -2,9 +2,17 @@ class ReimbursementController < ApplicationController
   include Authenticatable
   def show
     reimbursement = if @current_user.admin
-                      Reimbursement.all
+          Reimbursement.joins(:user).select("reimbursements.id as id,
+            reimbursements.description as description, 
+            reimbursements.amount as amount, 
+            reimbursements.status as status, 
+            users.name as name")
                     else
-                      Reimbursement.all.where(user_id: @current_user.id)
+                      Reimbursement.joins(:user).select("reimbursements.id as id,
+                        reimbursements.description as description, 
+                        reimbursements.amount as amount, 
+                        reimbursements.status as status, 
+                        users.name as name").where(user_id: @current_user.id)
                     end
     render json: reimbursement, status: :ok
   end
