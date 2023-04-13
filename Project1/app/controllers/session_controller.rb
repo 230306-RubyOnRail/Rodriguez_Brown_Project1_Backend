@@ -10,7 +10,7 @@ class SessionController < ApplicationController
     puts user.inspect
     puts credentials['password']
     if user.authenticate(credentials['password'])
-      render json: { token: JsonWebToken.encode(user_id: user.id), user_id: user.id}, status: :created
+      render json: { token: JsonWebToken.encode(user_id: user.id), id: user.id, name: user.name, admin: user.admin}, status: :created
     else
       head :unauthorized
     end
