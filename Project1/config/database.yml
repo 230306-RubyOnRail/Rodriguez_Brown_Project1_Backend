@@ -27,5 +27,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  database: postgres
+  username: postgres
+  password: masterpassword
+  host: rodriguez-brown-project2.chqhpvnmzm1p.us-east-1.rds.amazonaws.com
+  port: 5432
+  pool: 5
+  timeout: 5000
