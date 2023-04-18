@@ -14,6 +14,9 @@ jobs:
     env:
       RAILS_ENV: test
     steps:
+      - name: Move into folder
+        run: |
+          cd project1
       - name: Checkout code
         uses: actions/checkout@v3
       # Add or replace dependency steps here
