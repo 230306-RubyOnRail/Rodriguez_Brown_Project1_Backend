@@ -23,10 +23,12 @@ jobs:
           ruby-version: 3.1.3
           bundler-cache: true
       - name: Install Dependencies
+        working-directory: Project1
         run: |
           ls
           gem install bundler
           bundle install --jobs 4 --retry 3
       # Add or replace test runners here
       - name: Run tests
+        working-directory: Project1
         run: bundle exec rails test
